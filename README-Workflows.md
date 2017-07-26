@@ -1,8 +1,8 @@
-Workflows
+*Workflows*
 
 Documented workflows for tricky tasks.
 
-Submitting an annotated whole genome sequence (WGS) to NCBI
+*Submitting an annotated whole genome sequence (WGS) to NCBI*
 
 This was a major stumbling block for me and I'm writing up the protocol and associated scripts in the hopes it can help others.
 
