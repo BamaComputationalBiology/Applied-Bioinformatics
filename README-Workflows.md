@@ -78,4 +78,4 @@ One thing to note - GAG gets rid of the MAKER2 annotated UTR's in its resulting 
 
 The .gff has to have the same name as the genome file (here genome.fsa) and here I'm giving the locus tags the organism and strain names. These are required for NCBI submission.
 
-13. tbl2asn generates a number of files that will theoretically tell you if your files are NCBI-compliant. This is actually the part that took me quite a while to figure out because some errors were marked as "FATAL" 
+13. tbl2asn generates a number of files that will theoretically tell you if your files are NCBI-compliant. This is actually the part that took me quite a while to figure out and ended up in a lot of back and forth with the NCBI staff. 
