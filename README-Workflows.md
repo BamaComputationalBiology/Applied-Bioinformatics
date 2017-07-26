@@ -1,4 +1,4 @@
-*Workflows*
+**Workflows**
 
 Documented workflows for tricky tasks.
 
