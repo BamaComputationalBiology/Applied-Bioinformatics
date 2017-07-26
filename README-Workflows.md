@@ -39,7 +39,7 @@ This was a major stumbling block for me!
   
       > mput file1.fastq.gz 
       
-    instead of the 'put' that NCBI suggests. 'mput' will go through each file in your data directory and add if you want to transfer that file or not making it much easier to transfer multiple files at one time. Once your files are transferred go back to the SRA submission wizard and complete your submission. 
+  instead of the 'put' that NCBI suggests. 'mput' will go through each file in your data directory and add if you want to transfer that file or not making it much easier to transfer multiple files at one time. Once your files are transferred go back to the SRA submission wizard and complete your submission. 
 
 If your files get stopped and marked with errors it may be an error on your side or it may be a bug on the NCBI side. For example, my submission came up with several pairs of sequences that it said could not be appropriately matched. I searched these in my files and compared them every which way and couldn't find a problem. I emailed NCBI and the staff replied that it was probably a bug on their side. They reply promptly but it is these kind of things that made this a long process. So try to not put in too much effort before you ask them for guidance. 
 
