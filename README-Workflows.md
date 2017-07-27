@@ -103,6 +103,8 @@ to quickly get the average and compare between annotation runs with different pa
 
 9. I used the Genome Annotation Generator (GAG https://github.com/genomeannotation/GAG/blob/master/gag.py) to correct intron errors and other glitches. Funannotate https://github.com/nextgenusfs/funannotate is also recommended but I found it tossed a bunch of gene models without verbose output on why and didn't use it. It was very easy to install and use through homebrew though https://brew.sh/ and it actually installed a bunch of other useful software for me that I had previously had problems installing, funny enough. 
 
+GAG treats intron errors in genes as gene errors and tosses the entire gene model. This made me cry but I had 312 intron errors across ~100 genes and I had to get moving. It was not even 1/2 of 1% of the genes but still I felt like "But what if that was a REALLY important gene." Important genes may get tossed but until there is a better system it's really not workable to manually correct these intron errors to retain genes. 
+
 One thing to note - GAG gets rid of the MAKER2 annotated UTR's in its resulting genome.gff file but you can add these back in if you want. I did not add them back in and NCBI accepted the file.  
 
 10. GAG creates a .gff file and a .tbl file which can be used to generate a .sqn file for NCBI submission with the NCBI program tbl2asn https://www.ncbi.nlm.nih.gov/genbank/tbl2asn2/. There is also a table2asn program which generates a .sqn from a .gff but I couldn't figure out how to add in some of the features that NCBI required and did not end up using this. I actually can't find the link now and can only find other people reporting problems and asking how to use it so maybe it is still in beta (i.e., testing version). 
@@ -115,6 +117,59 @@ One thing to note - GAG gets rid of the MAKER2 annotated UTR's in its resulting 
 
 The .gff has to have the same name as the genome file (here genome.fsa) and here I'm giving the locus tags the organism and strain names. These are required for NCBI submission.
 
-13. tbl2asn generates a number of files that will theoretically tell you if your files are NCBI-compliant. This is actually the part that took me quite a while to figure out and ended up in a lot of back and forth with the NCBI staff. tbl2asn will generate three information files that will tell you about possible inconsistencies that will cause your files to fail NCBI checks. These are the discrepancy report (in the line above I have asked tbl2asn to generate it with the -Z flag and called it 'discrep'), the abbreviated error report error.val and the verbose error report genome.val. The problem is that the abbreviated error report is so short you can't get useful information out of it, the discrepancy report is a flow-of-consciousness file with headers that are not associated with the lines below and so impossible to search (for example, mine was 157,754 lines), the verbose error report can be searched if you already know what to search for (mine was 168,217 lines), and all 3 of these are peppered with 'this might be okay if your gene/genome falls under XYZ categories but it might not be okay if not.' According to NCBI you can run another program, asndisc https://www.ncbi.nlm.nih.gov/genbank/asndisc/, which will collate this information but it still gives you the 'maybe/maybe not' category for many genes. For example, the OVERLAPPING_CDS flag indicates that two CDSs overlap which NCBI says is not biologically valid UNLESS the genes are ABC-type transporters in which case that is common. A super nerdy interdisciplinary science joke is that if you ask a biologist a question the answer will always be "Well, it depends." The problem here is the time it takes to check each of these 'maybe/maybe not situations.'
+13. tbl2asn generates a number of files that will theoretically tell you if your files are NCBI-compliant. This is actually the part that took me quite a while to figure out and ended up in a lot of back and forth with the NCBI staff. tbl2asn will generate three information files that will tell you about possible inconsistencies that will cause your files to fail NCBI checks. These are the discrepancy report (in the line above I have asked tbl2asn to generate it with the -Z flag and called it 'discrep'), the abbreviated error report error.val and the verbose error report genome.val. 
 
-14. 
+The problem is that the abbreviated error report is so short you can't get useful information out of it, the discrepancy report is a flow-of-consciousness file with headers that are not associated with the lines below and so impossible to search (for example, mine was 157,754 lines), the verbose error report can be searched if you already know what to search for (mine was 168,217 lines), and all 3 of these are peppered with 'this might be okay if your gene/genome falls under XYZ categories but it might not be okay if not.' 
+
+According to NCBI you can run another program, asndisc https://www.ncbi.nlm.nih.gov/genbank/asndisc/, which will collate this information but it still gives you the 'maybe/maybe not' category for many genes. For example, the OVERLAPPING_CDS flag indicates that two CDSs overlap which NCBI says is not biologically valid UNLESS the genes are ABC-type transporters in which case that is common. A super nerdy interdisciplinary science joke is that if you ask a biologist a question the answer will always be "Well, it depends." The problem here is the time it takes to check each of these 'it depends' situations when you are annotating 20,000+ genes and 100,000+ introns and exons. And who knows, maybe your novel genome and annotations will write NEW RULES on 'it depends.'
+
+14. The head of your discrepancy report will look like this:
+
+        Discrepancy Report Results
+
+        Summary
+        DISC_PROTEIN_NAMES:All proteins have same name "hypothetical protein"
+        DISC_SOURCE_QUALS_ASNDISC:strain (all present, all same)
+        DISC_SOURCE_QUALS_ASNDISC:taxname (all present, all same)
+        DISC_FEATURE_COUNT:gene: 24855 present
+        DISC_FEATURE_COUNT:CDS: 25624 present
+        DISC_FEATURE_COUNT:mRNA: 25624 present
+        DISC_COUNT_NUCLEOTIDES:1858 nucleotide Bioseqs are present
+        FEATURE_LOCATION_CONFLICT:9517 features have inconsistent gene locations.
+        JOINED_FEATURES:49537 features have joined locations. # (1)
+        FATAL: CONTAINED_CDS:893 coding regions are completely contained in another coding region.  # (2) 
+        DISC_LONG_NO_ANNOTATION:60 bioseqs are longer than 5000nt and have no features
+        NO_ANNOTATION:421 bioseqs have no features
+        DISC_BAD_GENE_STRAND:8 feature locations conflict with gene location strands
+        DISC_QUALITY_SCORES:Quality scores are missing on all sequences.
+        FATAL: DISC_BACTERIAL_PARTIAL_NONEXTENDABLE_PROBLEMS:25616 features have partial ends that do not abut the end of the sequence or a gap, and cannot be extended by 3 or fewer nucleotides to do so # (3)
+        MISSING_GENOMEASSEMBLY_COMMENTS:1858 bioseqs are missing GenomeAssembly structured comments
+        TEST_LOW_QUALITY_REGION:57 sequences contains low quality region
+        MOLTYPE_NOT_MRNA:1858 molecule types are not set as mRNA.
+        TECHNIQUE_NOT_TSA:1858 technique are not set as TSA
+        MISSING_STRUCTURED_COMMENT:1858 sequences do not include structured comments.
+        ONCALLER_BIOPROJECT_ID:27482 sequences contain BioProject IDs
+        DISC_INCONSISTENT_DBLINK:DBLink Report (all present, all same)
+        DISC_INCONSISTENT_MOLINFO_TECH:Molinfo Technique Report (some missing, all same)
+        DISC_GAPS:659 sequences contain gaps
+
+According to NCBI you have to fix everything that is marked "FATAL" and try to check that the other things are valid. This is not true. For example, (1) reflects intron/exon structure in genes. It would not be valid for prokaryotes but it is for eukaryotes so you can ignore it. (2) is marked FATAL but when I checked these they are actually splice variants. (3) is marked FATAL but the NCBI staff said it is a bug and they are not sure why it is being marked in the files. Importantly, my file actually had errors that caused it to fail the NCBI checks but none of them are marked or indicated here. 
+
+15. The abbreviated error report errorsummary.val will look like this:
+
+        22431 ERROR:   SEQ_FEAT.PartialProblem (1) 
+            8 ERROR:   SEQ_INST.StopInProtein  (2) 
+        42281 WARNING: SEQ_FEAT.NotSpliceConsensusAcceptor (3) 
+        44961 WARNING: SEQ_FEAT.NotSpliceConsensusDonor
+        55469 WARNING: SEQ_FEAT.PartialProblem
+          189 WARNING: SEQ_FEAT.ShortExon
+         1725 INFO:    SEQ_FEAT.PartialProblem
+         1153 INFO:    SEQ_FEAT.RareSpliceConsensusDonor
+
+(1) seems to report many errors but are actually small inconsistencies that will not cause the file to fail NCBI checks, (2) lists 8 errors that will cause the file to fail NCBI checks, and (3) and below (WARNING and INFO lines) will not cause the file to fail NCBI checks. The errors that will cause it to fail will be marked with ERROR and if the numbers are very large it is likely an NCBI bug or small inconsistency. If the numbers are small it indicates a few of your genes that have actual errors or inconsistencies and these have to be fixed for submission.
+
+16. The actual offending genes are listed in the 3rd file, genome.val. I found each of these by opening the file with vim and searching for the statement 'SEQ_INST.StopIn.' In the genome.val file these true fatal errors are not marked with either 'ERROR' or 'FATAL' or anything else that might help you identify them without knowing what you are looking for. These 8 stop codons in proteins were spread across 5 genes and may have been pseudogenes, frameshifts, assembly errors, or annotation errors. In the interest of time I made the executive decision to delete these to get the file submitted. So in brief: get the small # ERROR level messages from the errorsummary.val file, search each of these in the genome.val file, delete these from your .gff. 
+
+17. I then regenerated my .sqn file with tbl2asn and checked my errorsummary.val file. The small # error messages disappeared and I submitted this .sqn file to NCBI. It passed the checks! I **think** that means I cracked their submission code, at least partially. For Caenorhabditis. For now. 
+
+18. This fieldguide is not a step-by-step protocol and assumes you are pretty high-functioning with compute-bioinfo-stuff. I tell my students that people liken molecular biology to baking a cake but bioinformatics is more like performing a dance. You need to put in the time to develop the skills to even get to the point where you can start to emulate the dance. I don't know any other way to do it, if anyone does please let me know! 
