@@ -4,19 +4,31 @@ Documenting my protocols for tricky tasks.
 
 ***Submitting an annotated whole genome sequence (WGS) to NCBI***
 
-This was a substantial learning expedition for me. This field guide is intentionally verbose to aid my memory for the future and to help those who need to perform these same tasks.
+This was a substantial learning expedition for me. This field guide is intentionally verbose to aid my memory for the future and to help my students when they need to perform these same tasks.
 
-Pieces you will actually submit:
 
-BioSample #
-
-BioProject #
+Pieces you will need to submit:
 
 Assembled WGS
 
 Raw .fastq(s) (preferably zipped, so .fastq.gz(s)) with your DNA sequences used in assembly and your mRNA sequences used in annotation
 
 .gff with annotated genes 
+
+
+Pieces you will generate to submit (aka NCBI-specific files):
+
+BioSample #
+
+BioProject #
+
+Locus-tag prefix
+
+Sequence Read Archive library descriptions .txt
+
+submission template .sbt
+
+sequence file .sqn
 
 
 1. The first step is registering your project with NCBI. You will need to register both a BioSample https://submit.ncbi.nlm.nih.gov/subs/biosample/ for the physical organism/tissue and a BioProject https://submit.ncbi.nlm.nih.gov/subs/bioproject/ for the data generated from that BioSample. NCBI will also give you a locus-tag prefix that will be assigned to every annotated gene. For example, my locus-tag prefix was FL81 and the first annotated gene in my WGS was FL81_00001, the second FL81_00002, etc. This will be different from your accession number, and your accession number will not be assigned until you have passed all NCBI checks. 
@@ -89,7 +101,7 @@ to quickly get the average and compare between annotation runs with different pa
 
 One thing to note - GAG gets rid of the MAKER2 annotated UTR's in its resulting genome.gff file but you can add these back in if you want. I did not add them back in and NCBI accepted the file.  
 
-10. GAG creates a .gff file and a .tbl file which can be used to generate a .sqn file for NCBI submission with the NCBI program tbl2asn https://www.ncbi.nlm.nih.gov/genbank/tbl2asn2/. There is also a table2asn program which generates a .sqn from a .gff but I couldn't figure out how to add in some of the features that NCBI required and did not end up using this. I actually can't find the link now and can only find other people reporting problems and asking how to use it so maybe it is still in beta. 
+10. GAG creates a .gff file and a .tbl file which can be used to generate a .sqn file for NCBI submission with the NCBI program tbl2asn https://www.ncbi.nlm.nih.gov/genbank/tbl2asn2/. There is also a table2asn program which generates a .sqn from a .gff but I couldn't figure out how to add in some of the features that NCBI required and did not end up using this. I actually can't find the link now and can only find other people reporting problems and asking how to use it so maybe it is still in beta (i.e., testing version). 
 
 11. You will need to create a template file for submission information https://www.ncbi.nlm.nih.gov/genbank/tbl2asn2/. 
 
