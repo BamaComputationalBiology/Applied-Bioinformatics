@@ -95,9 +95,9 @@ If your files get stopped and marked with errors it may be an error on your side
 
 If you want to know about the quality of your annotations you can evaluate your Annotation Edit Distance (AED) and edited (eAED) values. For example, I used this line 
 
-      cat *.all.maker.proteins.fasta | grep '>' | sed 's/eAED\:/\t/g' | sed 's/ e//g' | cut -f 2 | awk '{ sum += $1 } END {print sum/NR }'
+      cat *.all.maker.proteins.fasta | grep '>' | sed 's/eAED\:/\t/g' | tr ' ' '\t' | awk '{ sum += $4 } END {print sum/NR }'
 
-to quickly get the average and compare between annotation runs with different parameters. 
+to quickly get the average and compare between annotation runs with different parameters.
 
 8. The resulting MAKER2 .gff will have some glitches and inconsistencies. In particular NCBI requires that all introns > 10bp for submission. A lot of the MAKER2 introns that don't meet this requirement are 10bp inclusive but 9bp exclusive, for example an intron from bases 1725-1735. I think this might be a glitch in the MAKER2 vs. NCBI set computations and it affects <<<1% of the genes but NCBI will still reject the entire file. 
 
