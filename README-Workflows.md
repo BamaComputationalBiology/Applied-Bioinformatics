@@ -9,9 +9,13 @@ This was a substantial learning expedition for me. This field guide is intention
 Pieces you will actually submit:
 
 BioSample #
+
 BioProject #
+
 Assembled WGS
+
 Raw .fastq(s) (preferably zipped, so .fastq.gz(s)) with your DNA sequences used in assembly and your mRNA sequences used in annotation
+
 .gff with annotated genes 
 
 
