@@ -4,7 +4,7 @@ Documenting my protocols for tricky tasks.
 
 ***Submitting an annotated whole genome sequence (WGS) to NCBI***
 
-This was a substantial learning expedition for me. This field guide is intentionally verbose to aid my memory for the future and to help my students when they need to perform these same tasks.
+This was a substantial learning expedition for me. This field guide is intentionally verbose to aid my memory for the future and to help my students when they need to perform these same tasks. If you have generated a .sqn for NCBI submission and want to fix it, jump to #13 below. 
 
 
 Pieces you will need to submit:
