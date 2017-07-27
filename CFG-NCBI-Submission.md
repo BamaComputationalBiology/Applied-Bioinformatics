@@ -4,7 +4,7 @@ Documenting protocols for tricky tasks.
 
 ***Submitting an annotated whole genome sequence (WGS) to NCBI***
 
-This was a substantial learning expedition for me. This field guide is intentionally verbose to aid my memory for the future and to help my students when they need to perform these same tasks. If you have generated a .sqn for NCBI submission and want to fix it, jump to #13 below. 
+This was a substantial learning expedition for me. This field guide is intentionally verbose to aid my memory for the future and to help my students when they need to perform these same tasks. If you have generated a .sqn for NCBI submission and want to fix it, jump to #13 below. If you really want to get going jump to #15/16.
 
 
 Pieces you will need to submit:
@@ -82,7 +82,6 @@ If your files get stopped and marked with errors it may be an error on your side
           base=genome_SeqID_headers
 
           gff3_merge -d ./$base\_master_datastore_index.log 
-          gff3_merge -d ./$base\_master_datastore_index.log -o $base\_no_evidence -g
           SOBAcl ./$base\.all.gff > SOBA.txt
           fasta_merge -d $base\_master_datastore_index.log
 
@@ -101,7 +100,7 @@ to quickly get the average and compare between annotation runs with different pa
 
 8. The resulting MAKER2 .gff will have some glitches and inconsistencies. In particular NCBI requires that all introns > 10bp for submission. A lot of the MAKER2 introns that don't meet this requirement are 10bp inclusive but 9bp exclusive, for example an intron from bases 1725-1735. I think this might be a glitch in the MAKER2 vs. NCBI set computations and it affects <<1% of the genes but NCBI will still reject the entire file. 
 
-9. I used the Genome Annotation Generator (GAG https://github.com/genomeannotation/GAG/blob/master/gag.py) to correct intron errors and other glitches. Funannotate https://github.com/nextgenusfs/funannotate is also recommended but I found it tossed a bunch of gene models without verbose output on why and didn't use it. It was very easy to install and use through homebrew though https://brew.sh/ and it actually installed a bunch of other useful software for me that I had previously had problems installing, funny enough. 
+9. I used the Genome Annotation Generator (GAG https://github.com/genomeannotation/GAG/blob/master/gag.py) to correct intron errors and other glitches. Funannotate https://github.com/nextgenusfs/funannotate is also recommended but I found it tossed a bunch of gene models without verbose output on why and didn't use it. It was very easy to install through homebrew though https://brew.sh/ and it actually installed a bunch of other useful software for me that I had previously had problems installing, funny enough. Also easy to use.
 
 GAG treats intron errors in genes as gene errors and tosses the entire gene model. This made me cry but I had 312 intron errors across ~100 genes and I had to get moving. It was not even 1/2 of 1% of the genes but still I felt like "But what if that was a REALLY important gene." Important genes may get tossed but until there is a better system it's really not workable to manually correct these intron errors to retain genes. 
 
@@ -166,9 +165,9 @@ According to NCBI you have to fix everything that is marked "FATAL" and try to c
          1725 INFO:    SEQ_FEAT.PartialProblem
          1153 INFO:    SEQ_FEAT.RareSpliceConsensusDonor
 
-(1) seems to report many errors but are actually small inconsistencies that will not cause the file to fail NCBI checks, (2) lists 8 errors that will cause the file to fail NCBI checks, and (3) and below (WARNING and INFO lines) will not cause the file to fail NCBI checks. The errors that will cause it to fail will be marked with ERROR and if the numbers are very large it is likely an NCBI bug or small inconsistency. If the numbers are small it indicates a few of your genes that have actual errors or inconsistencies and these have to be fixed for submission.
+(1) seems to report many errors but are actually small inconsistencies that will not cause the file to fail NCBI checks, (2) lists 8 errors that will cause the file to fail NCBI checks, and (3) and below (WARNING and INFO lines) will not cause the file to fail NCBI checks. The errors that will cause it to fail will be marked with ERROR and if the numbers are very large it is likely an NCBI bug or small inconsistency. If the numbers are small it **probably** indicates a few of your genes that have actual errors or inconsistencies and these have to be fixed for submission.
 
-16. The actual offending genes are listed in the 3rd file, genome.val. I found each of these by opening the file with vim and searching for the statement 'SEQ_INST.StopIn.' In the genome.val file these true fatal errors are not marked with either 'ERROR' or 'FATAL' or anything else that might help you identify them without knowing what you are looking for. These 8 stop codons in proteins were spread across 5 genes and may have been pseudogenes, frameshifts, assembly errors, or annotation errors. In the interest of time I made the executive decision to delete these to get the file submitted. So in brief: get the small # ERROR level messages from the errorsummary.val file, search each of these in the genome.val file, delete these from your .gff. 
+16. The actual offending genes are listed in the 3rd file, genome.val. I found each of these by opening the file with vim and searching for the statement 'SEQ_INST.StopIn'. In the genome.val file these true fatal errors are not marked with either 'ERROR' or 'FATAL' or anything else that might help you identify them without knowing what you are looking for. These 8 stop codons in proteins were spread across 5 genes and may have been pseudogenes, frameshifts, assembly errors, or annotation errors. In the interest of time I made the executive decision to delete these to get the file submitted. So in brief: get the small # ERROR level messages from the errorsummary.val file, search each of these in the genome.val file, delete these from your .gff. 
 
 17. I then regenerated my .sqn file with tbl2asn and checked my errorsummary.val file. The small # error messages disappeared and I submitted this .sqn file to NCBI. It passed the checks! I **think** that means I cracked their submission code, at least partially. For Caenorhabditis. For now. 
 
