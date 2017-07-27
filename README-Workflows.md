@@ -16,6 +16,8 @@ Raw .fastq(s) (preferably zipped, so .fastq.gz(s)) with your DNA sequences used 
 .gff with annotated genes 
 
 
+
+
 Pieces you will generate to submit (aka NCBI-specific files):
 
 BioSample #
