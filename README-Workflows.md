@@ -46,6 +46,8 @@ sequence file .sqn
     
           > grep -c 'AGATGTGTATAAGAGA' file.fastq 
 
+  The exact number that constitutes 'adapter contamination' is subjective and depends on how many sequences you are analyzing. A few hundred is probably random chance but definitely a few million needs to be dealt with. I use TrimGalore for adapter trimming https://github.com/FelixKrueger/TrimGalore
+  
   If you have aggressively eliminated adapters there may still be small sequences that are flagged as problematic. I had a few of these     but they were very small (for example, 13bp) and identified as possibly coming from 'multiple sources.' NCBI does a large-scale screen for every possible known adapter and it is likely these short sequences are similar to known adapters due to random chance. I was not able to find the identified sequences in our raw DNA sequences and I chose to mask these sequences and resubmit the WGS. I generated a .bed file of the possible adapter sequences with this format (tab-separated)
 
           Contig1 738395  738408  adapter
