@@ -1,10 +1,10 @@
-**Workflows**
+**Computational Field Guides**
 
-Documented workflows for tricky tasks.
+Documenting my protocols for tricky tasks.
 
-*Submitting an annotated whole genome sequence (WGS) to NCBI*
+***Submitting an annotated whole genome sequence (WGS) to NCBI***
 
-This was a major stumbling block for me!
+This was a substantial learning expedition for me. This field guide is intentionally verbose to aid my memory for the future and to help those who need to perform these same tasks.
 
 1. The first step is registering your project with NCBI. You will need to register both a BioSample https://submit.ncbi.nlm.nih.gov/subs/biosample/ for the physical organism/tissue and a BioProject https://submit.ncbi.nlm.nih.gov/subs/bioproject/ for the data generated from that BioSample. 
 
