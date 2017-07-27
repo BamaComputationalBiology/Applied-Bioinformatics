@@ -1,6 +1,6 @@
-**Computational Field Guides**
+**Computational Field Guide**
 
-Documenting my protocols for tricky tasks.
+Documenting protocols for tricky tasks.
 
 ***Submitting an annotated whole genome sequence (WGS) to NCBI***
 
@@ -99,7 +99,7 @@ If you want to know about the quality of your annotations you can evaluate your 
 
 to quickly get the average and compare between annotation runs with different parameters.
 
-8. The resulting MAKER2 .gff will have some glitches and inconsistencies. In particular NCBI requires that all introns > 10bp for submission. A lot of the MAKER2 introns that don't meet this requirement are 10bp inclusive but 9bp exclusive, for example an intron from bases 1725-1735. I think this might be a glitch in the MAKER2 vs. NCBI set computations and it affects <<<1% of the genes but NCBI will still reject the entire file. 
+8. The resulting MAKER2 .gff will have some glitches and inconsistencies. In particular NCBI requires that all introns > 10bp for submission. A lot of the MAKER2 introns that don't meet this requirement are 10bp inclusive but 9bp exclusive, for example an intron from bases 1725-1735. I think this might be a glitch in the MAKER2 vs. NCBI set computations and it affects <<1% of the genes but NCBI will still reject the entire file. 
 
 9. I used the Genome Annotation Generator (GAG https://github.com/genomeannotation/GAG/blob/master/gag.py) to correct intron errors and other glitches. Funannotate https://github.com/nextgenusfs/funannotate is also recommended but I found it tossed a bunch of gene models without verbose output on why and didn't use it. It was very easy to install and use through homebrew though https://brew.sh/ and it actually installed a bunch of other useful software for me that I had previously had problems installing, funny enough. 
 
@@ -174,4 +174,4 @@ According to NCBI you have to fix everything that is marked "FATAL" and try to c
 
 Another thing to note- when your file fails the NCBI checks it will generate an email that tells you to get your errors out of the 'Validation.txt' file on the submission website, fix these things and resubmit. This is also not true! I tried to do this a number of times and every time I emailed the NCBI people I felt like we were talking about different errors and different files. Because we were! They were referencing the "ERROR" level messages I discussed above and I was trying to fix the errors in the 'Validation.txt' file which were actually not causing my file to fail. 
 
-18. This fieldguide is not a step-by-step protocol and assumes you are are already high-functioning with compute-bioinfo-stuff. I tell my students that people liken molecular biology to baking a cake but bioinformatics is more like performing a dance. You need to put in the time to develop the skills to even get to the point where you can start to emulate the dance. I don't know any other way to do it, if anyone does please let me know. 
+18. This fieldguide is not a step-by-step protocol and assumes you are are already high-functioning with compute-bioinfo-stuff. People liken molecular biology to baking a cake but bioinformatics is more like performing a dance. You need to put in the time to develop the skills to even get to the point where you can start to emulate the dance. I don't know any other way to do it, if anyone does please let me know. 
