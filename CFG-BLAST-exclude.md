@@ -15,6 +15,7 @@ Recently I submitted a manuscript to decontaminate assembled genome sequences an
 4. Click on the arrow -> under 'Choose Destination' select 'File' -> under 'Format' drop down and select 'GI List.'
 
 5. NCBI will create a blacklist of individual sequence accessions; download this and rename it. Here, I have renamed it 'Cremanei.gi.'
+        **Important**: NCBI regularly updates their databases and this blacklist is built off the most recent database version. Update your local BLAST database to get these synced. I did not do this and ended up with BLAST hits from old accessions that were deleted from the most recent BLAST database but present in our older version. 
 
 6. In your local blast search include this blacklist under the 'negative_gilist' flag. For example, my slurm script is now:
 
