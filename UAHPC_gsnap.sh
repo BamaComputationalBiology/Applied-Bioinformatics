@@ -3,7 +3,7 @@
 #SBATCH -J gsnap_align    # job name
 #SBATCH -p main           # partition
 #SBATCH --qos main        # quality of service
-#SBATCH -t 24:00:00       # wall clock
+#SBATCH -t 24:00:00       # wall clock **note that the wall clock is computed against threads*time so a 4 core job given two hours will kill itself after 30 mins
 #SBATCH -n 1              # number of tasks
 #SBATCH -c 8              # cores/task
 #SBATCH --mem-per-cpu 4G  # memory per cpu
