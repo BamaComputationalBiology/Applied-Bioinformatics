@@ -12,3 +12,6 @@ paste - - - - - - - - < reads-int.fastq | tee >(cut -f 1-4 | tr '\t' '\n' > read
 
 paste - - - - < in.fastq | cut -f 1,2 | sed 's/^@/>/' | tr "\t" "\n" > out.fasta
 
+# Select lines longer than X, here 2145 characters
+
+paste - - - - < in.fastq | awk 'length($0) > 2145' | tr "\t" "\n" > long.fastq
