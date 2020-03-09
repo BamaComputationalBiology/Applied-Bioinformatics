@@ -16,7 +16,7 @@ awk ' NR%4 == 1 {print ">" substr($0, 2)} NR%4 == 2 {print} ' $FILE
 
 cat $FILE | cut -f 2 | awk '{sum=sum+$1} END {print sum/NR; sum = 0}' 
 
-# calculate a colum sum
+# calculate a column sum
 
 cat $FILE | cut -f 2 | awk '{sum=sum+$1} END {print sum; sum = 0}' 
 
